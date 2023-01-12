@@ -2,10 +2,6 @@
 
 Pass issues data from Jira to Smartsheets
 
-# alethix_jira_smartsheet_etl
-
-Load data to smartsheet from jira
-
 # Add your SSH key to the ssh-agent
 
 If you created your key with a different name, or if you are adding an existing key that has a different name, replace id_ed25519 in the command with the name of your private key file (instructions here: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent).
@@ -66,16 +62,19 @@ Application loops over the list of jobs within the job_details object.
     {
         "job_details": [
             {
-                "id": "string",
-                "jria_url": "string",
-                "name": "string",
-                "query": "string",
-                "max_results": "intiger",
-                "target_sheet_id": "string",
-                "smartsheet_url": "string"
+                "job_id": str
+                "name": str
+                "jira_url": str
+                "jira_api": str
+                "jira_query": str
+                "jira_fields": list
+                "max_results": int
+                "target_sheet_id": str
+                "smartsheet_url": str
             }
         ]
     }
+    *** example included as coorporate demo.
 
 # Schedule cron job
 
