@@ -1,0 +1,111 @@
+{
+    "happyPath": [
+        {
+                "id": "1",
+                "name": "job1",
+                "jira_url": "https://jira1.com",
+                "jira_api": "jira_api1",
+                "jira_query": "query1",
+                "max_results": "10",
+                "target_sheet_id": "sheet1",
+                "smartsheet_url": "https://smartsheet1.com"
+            },
+            {
+                "id": "2",
+                "name": "job2",
+                "jira_url": "https://jira2.com",
+                "jira_api": "jira_api2",
+                "jira_query": "query2",
+                "max_results": "20",
+                "target_sheet_id": "sheet2",
+                "smartsheet_url": "https://smartsheet2.com"
+            }
+        ],
+    "invalideJiraQuery": [
+        {
+            "id": "2",
+            "name": "job2",
+            "jira_url": "https://jira2.com",
+            "jira_api": "jira_api2",
+            "jira_query": "<-- Make it brake here-->",
+            "max_results": "20",
+            "target_sheet_id": "sheet2",
+            "smartsheet_url": "https://smartsheet2.com"
+        }
+    ],
+    "invalideJobObject": [
+        {
+            "name": "job1",
+            "jira_url": "https://jira1.com",
+            "jira_api": "jira_api1",
+            "jira_query": "query1",
+            "max_results": "10",
+            "target_sheet_id": "sheet1",
+            "smartsheet_url": "https://smartsheet1.com"
+        },
+        {
+            "id": "1",
+            "jira_url": "https://jira1.com",
+            "jira_api": "jira_api1",
+            "jira_query": "query1",
+            "max_results": "10",
+            "target_sheet_id": "sheet1",
+            "smartsheet_url": "https://smartsheet1.com"
+        },
+        {
+            "id": "1",
+            "name": "job1",
+            "jira_api": "jira_api1",
+            "jira_query": "query1",
+            "max_results": "10",
+            "target_sheet_id": "sheet1",
+            "smartsheet_url": "https://smartsheet1.com"
+        },
+        {
+            "id": "1",
+            "name": "job1",
+            "jira_url": "https://jira1.com",
+            "jira_query": "query1",
+            "max_results": "10",
+            "target_sheet_id": "sheet1",
+            "smartsheet_url": "https://smartsheet1.com"
+        },
+        {
+            "id": "1",
+            "name": "job1",
+            "jira_url": "https://jira1.com",
+            "jira_api": "jira_api1",
+            "max_results": "10",
+            "target_sheet_id": "sheet1",
+            "smartsheet_url": "https://smartsheet1.com"
+        },
+        {
+            "id": "1",
+            "name": "job1",
+            "jira_url": "https://jira1.com",
+            "jira_api": "jira_api1",
+            "jira_query": "query1",
+            "target_sheet_id": "sheet1",
+            "smartsheet_url": "https://smartsheet1.com"
+        },
+        {
+            "id": "1",
+            "name": "job1",
+            "jira_url": "https://jira1.com",
+            "jira_api": "jira_api1",
+            "jira_query": "query1",
+            "max_results": "10",
+            "smartsheet_url": "https://smartsheet1.com"
+        },
+        {
+            "id": "1",
+            "name": "job1",
+            "jira_url": "https://jira1.com",
+            "jira_api": "jira_api1",
+            "jira_query": "query1",
+            "max_results": "10",
+            "target_sheet_id": "sheet1"
+        }
+    ]
+
+}

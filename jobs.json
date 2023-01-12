@@ -1,0 +1,15 @@
+{
+    "jobs": [
+        {
+            "id": "796e420f-9c92-4ccc-b79c-6472e71403c8",
+            "name": "COORPORATE DEMO",
+            "jira_url": "https://alethixlabs.atlassian.net/",
+            "jira_api": "rest/api/3/",
+            "jira_query": "project = 'USDA Operational Excellence ETL'",
+            "jira_fields": ["key", "self", "id", "project", "summary", "status", "assignee"],
+            "max_results": 3,
+            "target_sheet_id": "4250616030619524",
+            "smartsheet_url": "https://api.smartsheet.com/2.0"
+        }
+    ]
+}
