@@ -3,13 +3,18 @@ import json
 import requests
 from requests.auth import HTTPBasicAuth
 
-import pandas as pd
-
 from jira_connector.model.jira_user import JiraUser
-from jira_connector.service.jira_data_process import process_issue
 
 
-def jira_issue_search(user: JiraUser, jql: str, fields: list, jira_url: str) -> any:
+def jira_issue_search(
+    user: JiraUser,
+    jql: str,
+    fields: list,
+    # jira_url: str,
+    start: int,
+    limit: int
+
+) -> any:
     """
     Get issues from jql search result with all related fields
     :param user:
@@ -28,10 +33,10 @@ def jira_issue_search(user: JiraUser, jql: str, fields: list, jira_url: str) -> 
 
     fields = None
     params = {}
-    # if start is not None:
-    #     params["startAt"] = int(start)
-    # if limit is not None:
-    #     params["maxResults"] = int(limit)
+    if start is not None:
+        params["startAt"] = int(start)
+    if limit is not None:
+        params["maxResults"] = int(limit)
     if fields is not None:
         if isinstance(fields, (list, tuple, set)):
             fields = ",".join(fields)
@@ -54,13 +59,7 @@ def jira_issue_search(user: JiraUser, jql: str, fields: list, jira_url: str) -> 
 
     data = json.loads(response.text)
 
-    dataframe = pd.DataFrame()
-
-    for issue in data["issues"]:
-        issue_dataframe = process_issue(issue, jira_url)
-        dataframe = pd.concat([dataframe, issue_dataframe], ignore_index=True)
-
-    return dataframe
+    return data
 
 
 if __name__ == "__main__":
