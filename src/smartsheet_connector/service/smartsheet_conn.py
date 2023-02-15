@@ -19,15 +19,9 @@ def smartsheets_login(smartsheets_user):
     # Assume User
     if smartsheets_user.smartsheet_url == "https://api.smartsheet.com/2.0":
         assume_user = None
-        pass
     else:
         assume_user = smartsheets_user.smartsheet_username
         smartsheet_client.assume_user(assume_user)
-
-    logging.info(f"""Created smartsheet_client Loging details for session
-User email: {smartsheets_user.smartsheet_username} Assume user: 
-{assume_user} User: {smartsheets_user.smartsheet_username}"""
-                 )
 
     return smartsheet_client
 
