@@ -1,6 +1,5 @@
 """Module providing logging"""
 import logging
-import logger
 
 import pandas as pd
 
@@ -20,12 +19,12 @@ def get_jira_data(
     start: int,
     limit: int
 ) -> None:
+    """Query data from Jira"""
 
     job_jira_data = jira_issue_search(
         jira_user,
         job.jira_query,
         job.jira_fields,
-        # job.jira_url,
         start,
         limit
     )
@@ -37,7 +36,6 @@ def get_jira_data(
     _issues_processed = 0
     for issue in job_jira_data["issues"]:
         issue_dataframe = process_issue(issue, job.jira_url)
-        print(issue_dataframe)
 
         dataframe = pd.concat(
             [dataframe, issue_dataframe],
@@ -56,14 +54,15 @@ def get_jira_data(
 
 
 def main() -> None:
+    """Main function"""
 
     # load data from jobs.json file
-    FILEPATH = "./jobs.json"
+    file_path = "./jobs.json"
     jobs = read_json_jobs('jobs.json')
 
     if jobs:
         # jobs data processing
-        logging.info('Jobs details loaded from %s', FILEPATH)
+        logging.info('Jobs details loaded from %s', file_path)
 
         # validate jobs
         job_processing_dict = build_job_processing_dict(jobs)
@@ -81,14 +80,15 @@ def main() -> None:
 
         if not valid_user(jira_user):
             raise EnvironmentError(
-                f'Jira Access Issue: Jira User {jira_user.jira_username}: Not able to access system, may not even exits.')
+                f"""Jira Access Issue: Jira User {jira_user.jira_username}: \
+Not able to access system, may not even exits.""")
 
     except Exception as err:
         raise err
 
     if job_processing_dict:
 
-        for index, job in job_processing_dict.items():
+        for _, job in job_processing_dict.items():
             _start = 0
             _limit = job.max_results
             issues_processed = 0
@@ -110,9 +110,8 @@ def main() -> None:
                 while paginate_data:
                     _start = _limit + _start
                     if _start > query_total_results:
-                        print("pagination complete")
                         paginate_data = False
-                        break
+                        continue
                     query_total_results, _issues_processed = get_jira_data(
                         jira_user=jira_user,
                         job=job,

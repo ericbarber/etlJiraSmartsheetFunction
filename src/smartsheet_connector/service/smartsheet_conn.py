@@ -1,5 +1,5 @@
 import smartsheet
-
+import logging
 # Smartsheet user login
 
 
@@ -24,15 +24,13 @@ def smartsheets_login(smartsheets_user):
         assume_user = smartsheets_user.smartsheet_username
         smartsheet_client.assume_user(assume_user)
 
-    print("Created smartsheet_client",
-          "Loging details for session",
-          f"User email: {smartsheets_user.smartsheet_username}",
-          f"Assume user: {assume_user}",
-          f"User: {smartsheets_user.smartsheet_username}", sep="\n\t"
-          )
+    logging.info(f"""Created smartsheet_client Loging details for session
+User email: {smartsheets_user.smartsheet_username} Assume user: 
+{assume_user} User: {smartsheets_user.smartsheet_username}"""
+                 )
 
     return smartsheet_client
 
 
 if __name__ == "__main__":
-    print("neat")
+    pass

@@ -34,17 +34,14 @@ def smartsheets_data_load(dataframe, sheet_id):
                 existing_issue_row_id[cell.value] = row.id
 
     # dataframe parsing
-    dataframe_columns = dataframe.columns
+    # dataframe_columns = dataframe.columns
 
     # loop over dataframe
-    print(f'existing_issue_row_id: {existing_issue_row_id}')
     new_issues_rows = []
     for entry in dataframe.to_dict('records'):
-        print(entry)
 
         # check if issue exists already
         if entry["id"] in existing_issue_row_id:
-            print(entry['id'])
 
             # update existing row in sheet by assigning row id to new row object
             existing_row = smartsheet.models.Row()
@@ -81,7 +78,6 @@ def smartsheets_data_load(dataframe, sheet_id):
             new_issues_rows.append(new_row)
 
     if len(new_issues_rows) != 0:
-        print("new rows:", new_issues_rows, sep="\n")
         # add rows to sheet
         response = smartsheets_client.Sheets.add_rows(
             sheet_id,
