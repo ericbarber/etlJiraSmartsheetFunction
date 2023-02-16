@@ -1,7 +1,6 @@
 """Module providing logging"""
 import logging
 import logger
-
 import pandas as pd
 
 from job_builder.service.job import read_json_jobs, build_job_processing_dict
@@ -20,12 +19,12 @@ def get_jira_data(
     start: int,
     limit: int
 ) -> None:
+    """Query data from Jira"""
 
     job_jira_data = jira_issue_search(
         jira_user,
         job.jira_query,
         job.jira_fields,
-        # job.jira_url,
         start,
         limit
     )
@@ -34,94 +33,98 @@ def get_jira_data(
 
     dataframe = pd.DataFrame()
 
-    _issues_processed = 0
     for issue in job_jira_data["issues"]:
         issue_dataframe = process_issue(issue, job.jira_url)
-        print(issue_dataframe)
 
         dataframe = pd.concat(
             [dataframe, issue_dataframe],
             ignore_index=True
         )
 
-        _issues_processed += 1
+    query_result = dataframe
 
-    if len(dataframe) > 0:
-        smartsheets_data_load(
-            issue_dataframe,
-            job.target_sheet_id
-        )
-
-    return query_total_results, _issues_processed
+    return query_total_results, query_result
 
 
 def main() -> None:
+    """Main function"""
 
     # load data from jobs.json file
-    FILEPATH = "./jobs.json"
+    file_path = "./jobs.json"
     jobs = read_json_jobs('jobs.json')
 
     if jobs:
         # jobs data processing
-        logging.info('Jobs details loaded from %s', FILEPATH)
+        logging.info('Jobs details loaded from %s', file_path)
 
         # validate jobs
         job_processing_dict = build_job_processing_dict(jobs)
         logging.info('Number of jobs to be processed: %s',
                      len(job_processing_dict))
 
-        logging.info('Jobs ready for jira api')
-
     else:
         # handle the error
         logging.info('Jobs details did not load')
 
     try:
+        # build jira user for api query
         jira_user = build_jira_user()
 
         if not valid_user(jira_user):
             raise EnvironmentError(
-                f'Jira Access Issue: Jira User {jira_user.jira_username}: Not able to access system, may not even exits.')
+                f"""Jira Access Issue: Jira User {jira_user.jira_username}: \
+Not able to access system, may not even exits.""")
 
     except Exception as err:
         raise err
 
+    # process data from query
     if job_processing_dict:
 
-        for index, job in job_processing_dict.items():
+        for _, job in job_processing_dict.items():
             _start = 0
             _limit = job.max_results
             issues_processed = 0
 
             try:
-                query_total_results, _issues_processed = get_jira_data(
+                query_total_results, query_result = get_jira_data(
                     jira_user=jira_user,
                     job=job,
                     start=_start,
                     limit=_limit
                 )
 
+                # send first batch to smartsheet
+                smartsheets_data_load(
+                    query_result,
+                    job.target_sheet_id
+                )
+
                 # counter for issues processed by pagination
-                issues_processed = issues_processed + _issues_processed
+                issues_processed = issues_processed + issues_processed
 
                 if query_total_results > _limit:
+                    logging.debug("PAGINATION REQUIRED")
                     paginate_data = True
 
                 while paginate_data:
                     _start = _limit + _start
                     if _start > query_total_results:
-                        print("pagination complete")
+                        logging.debug("PAGINATION COMPLETE")
                         paginate_data = False
-                        break
-                    query_total_results, _issues_processed = get_jira_data(
+                        continue
+                    query_total_results, query_result = get_jira_data(
                         jira_user=jira_user,
                         job=job,
                         start=_start,
                         limit=_limit
                     )
 
-                    # counter for issues processed by pagination
-                    issues_processed = issues_processed + _issues_processed
+                    # send paginatied batch to smartsheet
+                    smartsheets_data_load(
+                        query_result,
+                        job.target_sheet_id
+                    )
 
             except Exception as err:
                 raise err

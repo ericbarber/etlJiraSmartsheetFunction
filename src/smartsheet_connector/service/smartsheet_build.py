@@ -1,5 +1,6 @@
+"""Logging utility"""
+import logging
 import smartsheet
-
 # import smartsheets_user
 from smartsheet_connector.model.smartsheet_user import SmartsheetUser
 from smartsheet_connector.service.smartsheet_user import build_smartsheet_user
@@ -10,8 +11,7 @@ from smartsheet_connector.service.smartsheet_columns import sheet_columns_json
 
 
 def smartsheets_data_load(dataframe, sheet_id):
-    print(dataframe)
-
+    """Post row to smartsheet"""
     # build smartsheets user from .env
     smartsheets_user = build_smartsheet_user()
 
@@ -34,17 +34,16 @@ def smartsheets_data_load(dataframe, sheet_id):
                 existing_issue_row_id[cell.value] = row.id
 
     # dataframe parsing
-    dataframe_columns = dataframe.columns
+    # dataframe_columns = dataframe.columns
 
     # loop over dataframe
-    print(f'existing_issue_row_id: {existing_issue_row_id}')
     new_issues_rows = []
+    print(dataframe.to_dict('records'))
     for entry in dataframe.to_dict('records'):
         print(entry)
 
         # check if issue exists already
         if entry["id"] in existing_issue_row_id:
-            print(entry['id'])
 
             # update existing row in sheet by assigning row id to new row object
             existing_row = smartsheet.models.Row()
@@ -57,11 +56,11 @@ def smartsheets_data_load(dataframe, sheet_id):
                     new_cell = smartsheet.models.Cell()
                     new_cell.value = entry[item]
                     new_cell.column_id = smartsheets_columns_dict[item]["id"]
-                    # Build the row to update
+                    # build the row to update
                     existing_row.cells.append(new_cell)
 
             # Update rows with new data
-            updated_row = smartsheets_client.Sheets.update_rows(
+            smartsheets_client.Sheets.update_rows(
                 sheet_id,
                 [existing_row]
             )
@@ -81,7 +80,6 @@ def smartsheets_data_load(dataframe, sheet_id):
             new_issues_rows.append(new_row)
 
     if len(new_issues_rows) != 0:
-        print("new rows:", new_issues_rows, sep="\n")
         # add rows to sheet
         response = smartsheets_client.Sheets.add_rows(
             sheet_id,

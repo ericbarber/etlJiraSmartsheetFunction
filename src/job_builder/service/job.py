@@ -10,7 +10,6 @@ def create_job_object(job: dict) -> Job:
     input: json
     output: Job
     """
-    print(job)
     job_object = Job(
         job["id"],
         job["name"],
@@ -73,4 +72,3 @@ def job_validator(func):
 @job_validator
 def build_job(job: Job) -> None:
     """Validate the job"""
-    print(job)
