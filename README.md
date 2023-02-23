@@ -26,14 +26,18 @@ Setting your Git user details for every repository on your computer:
 
 Use Git SSH (not https) for git clone operation:
 
-    $ git clone git@github.com:<organization>/<REPOSITORY>.git -b production
+    $ git clone git@github.com:<organization>/<REPOSITORY>.git
 
 # Environment Setup
+
+## Install python and pip
 
 On Debian/Ubuntu systems, you need to install the python3-venv,
 python3-pip packages using the following command. You may need to use sudo with this command.
 
     $ apt install python3.8-venv python3-pip
+
+## Activate isolated environment
 
 After installing the packages, recreate your virtual environment by first creating a venv folder.
 
@@ -43,9 +47,13 @@ Activate virtual environement.
 
     $ <WORKING_DIRECTORY>/venv/bin/activate
 
+## install dependency packages
+
 Install python package dependencies listed in requirements.txt
 
     $ pip -r .<REPOSITORY>/requirements.txt
+
+## set user variables in secret file
 
 Additionally, include environment variables for application API calls in WORKING_DIRECTORY/REPOSITORY/.env file:
 
