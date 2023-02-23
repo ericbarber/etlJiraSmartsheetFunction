@@ -59,6 +59,7 @@ Additionally, include environment variables for application API calls in WORKING
 
     USERNAMEJIRA=<jira_user_name>
     USERKEYJIRA=<jira_user_password>
+    USERURLJIRA=<jira_user_url>
     USERNAMESMARTSHEET=<smartsheet_user_name>
     USERKEYSMARTSHEET=<smartsheet_user_password>
     USERURLSMARTSHEET=<smartsheet_url>
